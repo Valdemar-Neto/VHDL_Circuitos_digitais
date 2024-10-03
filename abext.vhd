@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
-
+----- entidade abext: entradas a e b de 8 bits, k de 4 bits; saidas: ia e ib de 8 bits, cin de 1 bit;
+----- componente principal do extensor AL
 entity abext is
 port(a,b : in std_logic_vector(7 downto 0); 
 k : in std_logic_vector(3 downto 0);
