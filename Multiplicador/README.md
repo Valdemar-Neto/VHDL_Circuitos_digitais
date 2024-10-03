@@ -1,8 +1,8 @@
 
 
-# CD-Pessoal-2024.2
+# Multiplicador de 8 bits
 
-Este repositório contém materiais e projetos relacionados ao curso de CD (Computação Distribuída) para o semestre 2024.2.
+Este diretório contêm a implementação de um multiplicador de 8 bits
 
 ## Conteúdo
 
