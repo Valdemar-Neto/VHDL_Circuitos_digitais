@@ -1,4 +1,4 @@
----componente xor: entrada a,b de 8 bits, saida z de 8 bits, corresponde à operação XOR bit a bit de a e b
+---testemaluco
 library ieee;
 use ieee.std_logic_1164.all;
 
