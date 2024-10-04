@@ -1,8 +1,6 @@
+# CD-Pessoal-2024.2
 
-
-# Multiplicador de 8 bits
-
-Este diretório contêm a implementação de um multiplicador de 8 bits
+Este repositório contém materiais e projetos relacionados ao curso de CD (Computação Distribuída) para o semestre 2024.2.
 
 ## Conteúdo
 
@@ -14,16 +12,27 @@ Este diretório contêm a implementação de um multiplicador de 8 bits
 
 Abaixo está o diagrama do multiplicador-bloco:
 
-![Multiplicador-Bloco](Diagrama/multiplicador-bloco.drawio.svg)
+![Multiplicador-Bloco](Multiplicador/Diagramas/multiplicador-bloco.drawio.svg)
 
-## Como Contribuir
+## Resultados
 
-1. Faça um fork do repositório.
-2. Crie uma nova branch (`git checkout -b feature/nova-feature`).
-3. Faça commit das suas alterações (`git commit -m 'Adiciona nova feature'`).
-4. Faça push para a branch (`git push origin feature/nova-feature`).
-5. Abra um Pull Request.
+### Com Truncamento
 
-## Licença
+Os resultados da multiplicação com truncamento são armazenados nos 8 bits menos significativos do vetor de saída. O bit de carry out armazena o resto do truncamento.
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+#### O truncamento foi necessário, pois o sistema só tem 8 bits
+
+![Com-Truncamento](Multiplicador/results/com_truncamento.jpg)
+
+### Sem Truncamento
+
+Os resultados da multiplicação sem truncamento são armazenados em um vetor de 16 bits, representando o valor completo da multiplicação.
+
+![Sem-Truncamento](Multiplicador/results/sem_truncamento.jpg)
+
+## Diagrama Manuscrito do Multiplicador-Bloco
+
+Abaixo está o diagrama manuscrito do multiplicador-bloco:
+
+![Multiplicador-Bloco-Manuscrito](Multiplicador/Diagramas/multiplicador-bloco-manuscrito.jpg)
+
