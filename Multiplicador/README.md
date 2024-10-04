@@ -12,7 +12,7 @@ Este repositório contém materiais e projetos relacionados ao curso de CD (Comp
 
 Abaixo está o diagrama do multiplicador-bloco:
 
-![Multiplicador-Bloco](Multiplicador/Diagramas/multiplicador-bloco.drawio.svg)
+![Multiplicador-Bloco](Multiplicador/Diagrama/multiplicador-bloco.drawio.svg)
 
 ## Resultados
 
@@ -34,5 +34,5 @@ Os resultados da multiplicação sem truncamento são armazenados em um vetor de
 
 Abaixo está o diagrama manuscrito do multiplicador-bloco:
 
-![Multiplicador-Bloco-Manuscrito](Multiplicador/Diagramas/multiplicador-bloco-manuscrito.jpg)
+![Multiplicador-Bloco-Manuscrito](Multiplicador/Diagrama/multiplicador-bloco-manuscrito.jpg)
 
