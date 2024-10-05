@@ -1,33 +1,33 @@
 
 -- Autor: Rutileno Gabriel Camilo da Silva
 
--- Definindo o halfadder.
--- A partir de algumas portas lógicas, é possível implementar um halfadder
+-- Definindo o halfadder_mult.
+-- A partir de algumas portas lógicas, é possível implementar um halfadder_mult
 
 -- Importando as bibliotecas permitidas
 library ieee;
 use ieee.std_logic_1164.all;
 
--- Definindo a entidade halfadder
-entity halfadder is
+-- Definindo a entidade halfadder_mult
+entity halfadder_mult is
     port (
 
-        -- Definindo as entradas e saídas do halfadder
-        A_input, B_input : in std_logic;
-        S_output, Carry_out : out std_logic
+        -- Definindo as entradas e saídas do halfadder_mult
+        A_ha_mult_input, B_ha_mult_input : in std_logic;
+        S_ha_mult_output, Carry_ha_mult_out : out std_logic
     );
 
--- Fim da entidade halfadder
-end entity halfadder;
+-- Fim da entidade halfadder_mult
+end entity halfadder_mult;
 
--- Definindo a arquitetura do halfadder
-architecture ckt of halfadder is
+-- Definindo a arquitetura do halfadder_mult
+architecture ckt of halfadder_mult is
 
 begin
 
     -- Atribuindo as operações lógicas para os sinais de saída
-    S_output <= A_input xor B_input;
-    Carry_out <= A_input and B_input;
+    S_ha_mult_output <= A_ha_mult_input xor B_ha_mult_input;
+    Carry_ha_mult_out <= A_ha_mult_input and B_ha_mult_input;
 
 -- Fim da arquitetura ckt
 end architecture ckt;
