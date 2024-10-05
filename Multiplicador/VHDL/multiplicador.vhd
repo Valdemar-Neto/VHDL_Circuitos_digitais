@@ -12,41 +12,41 @@ use ieee.std_logic_1164.all;
 entity multiplicador is 
     port (
         -- Definindo as entradas e saídas do multiplicador
-        A_input, B_input : in std_logic_vector(7 downto 0);
-        S_output : out std_logic_vector(7 downto 0);
-        Carry_out : out std_logic
+        A_mult_input, B_mult_input : in std_logic_vector(7 downto 0);
+        S_mult_output : out std_logic_vector(7 downto 0);
+        Carry_mult_out : out std_logic
     );
 end multiplicador;
 
 -- Definindo a arquitetura do multiplicador
 architecture ckt of multiplicador is
 
-    -- Definindo os componentes halfadder e fulladder
+    -- Definindo os componentes halfadder_mult e fulladder_mult
 
-    -- Definindo o componente halfadder
-    component halfadder is
+    -- Definindo o componente halfadder_mult
+    component halfadder_mult is
         port (
-            -- Definindo as entradas e saídas do halfadder
-            A_input, B_input : in std_logic;
-            S_output, Carry_out : out std_logic
+            -- Definindo as entradas e saídas do halfadder_mult
+            A_ha_mult_input, B_ha_mult_input : in std_logic;
+            S_ha_mult_output, Carry_ha_mult_out : out std_logic
         );
     end component;
 
-    -- Definindo o componente fulladder
-    component fulladder is
+    -- Definindo o componente fulladder_mult
+    component fulladder_mult is
         port (
-            -- Definindo as entradas e saídas do fulladder
-            A_input, B_input, Carry_in : in std_logic;
-            S_output, Carry_out : out std_logic
+            -- Definindo as entradas e saídas do fulladder_mult
+            A_fa_mult_input, B_fa_mult_input, Carry_fa_mult_in : in std_logic;
+            S_fa_mult_output, Carry_fa_mult_out : out std_logic
         );
     end component;
 
     -- Definindo os sinais que serão utilizados
-    signal a0, a1, a2, a3, a4, a5, a6, a7 : std_logic;
-    signal b0, b1, b2, b3, b4, b5, b6, b7 : std_logic;
-    signal c : std_logic_vector(15 downto 0);
-    signal cout : std_logic_vector(55 downto 0);
-    signal sum : std_logic_vector(55 downto 0);
+    signal a0_mult, a1_mult, a2_mult, a3_mult, a4_mult, a5_mult, a6_mult, a7_mult : std_logic;
+    signal b0_mult, b1_mult, b2_mult, b3_mult, b4_mult, b5_mult, b6_mult, b7_mult : std_logic;
+    signal c_mult_ : std_logic_vector(15 downto 0);
+    signal cout_mult_ : std_logic_vector(55 downto 0);
+    signal sum_mult_ : std_logic_vector(55 downto 0);
     signal temp1, temp2, temp3, temp4, temp5, temp6, temp7, temp8 : std_logic;
     signal temp9, temp10, temp11, temp12, temp13, temp14, temp15, temp16 : std_logic;
     signal temp17, temp18, temp19, temp20, temp21, temp22, temp23, temp24 : std_logic;
@@ -57,181 +57,181 @@ architecture ckt of multiplicador is
     signal temp57, temp58, temp59, temp60, temp61, temp62, temp63 : std_logic;
 
 begin
-    -- Atribuindo os valores de A_input e B_input para as variáveis a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7
-    a0 <= A_input(0); a1 <= A_input(1); a2 <= A_input(2); a3 <= A_input(3); a4 <= A_input(4); a5 <= A_input(5); a6 <= A_input(6); a7 <= A_input(7);
-    b0 <= B_input(0); b1 <= B_input(1); b2 <= B_input(2); b3 <= B_input(3); b4 <= B_input(4); b5 <= B_input(5); b6 <= B_input(6); b7 <= B_input(7);
+    -- Atribuindo os valores de A_mult_input e B_mult_input para as variáveis a0_mult, a1_mult, a2_mult, a3_mult, a4_mult, a5_mult, a6_mult, a7_mult, b0_mult, b1_mult, b2_mult, b3_mult, b4_mult, b5_mult, b6_mult, b7_mult
+    a0_mult <= A_mult_input(0); a1_mult <= A_mult_input(1); a2_mult <= A_mult_input(2); a3_mult <= A_mult_input(3); a4_mult <= A_mult_input(4); a5_mult <= A_mult_input(5); a6_mult <= A_mult_input(6); a7_mult <= A_mult_input(7);
+    b0_mult <= B_mult_input(0); b1_mult <= B_mult_input(1); b2_mult <= B_mult_input(2); b3_mult <= B_mult_input(3); b4_mult <= B_mult_input(4); b5_mult <= B_mult_input(5); b6_mult <= B_mult_input(6); b7_mult <= B_mult_input(7);
 
     -- Primeira coluna do multiplicador
-    c(0) <= (a0 and b0);
+    c_mult_(0) <= (a0_mult and b0_mult);
 
     -- Segunda coluna do multiplicador
-    temp1 <= a0 and b1;
-    temp2 <= a1 and b0;
-    halfadder0: halfadder port map (A_input => temp1, B_input => temp2, S_output => sum(0), Carry_out => cout(0));
-    c(1) <= sum(0);
+    temp1 <= a0_mult and b1_mult;
+    temp2 <= a1_mult and b0_mult;
+    halfadder_mult0: halfadder_mult port map (A_ha_mult_input => temp1, B_ha_mult_input => temp2, S_ha_mult_output => sum_mult_(0), Carry_ha_mult_out => cout_mult_(0));
+    c_mult_(1) <= sum_mult_(0);
 
     -- Terceira coluna do multiplicador
-    temp3 <= a0 and b2;
-    temp4 <= a1 and b1;
-    fulladder0: fulladder port map (A_input => temp3, B_input => temp4, Carry_in => cout(0), S_output => sum(1), Carry_out => cout(1));
-    temp5 <= a2 and b0;
-    halfadder1: halfadder port map (A_input => sum(1), B_input => temp5, S_output => sum(2), Carry_out => cout(2));
-    c(2) <= sum(2);
+    temp3 <= a0_mult and b2_mult;
+    temp4 <= a1_mult and b1_mult;
+    fulladder_mult0: fulladder_mult port map (A_fa_mult_input => temp3, B_fa_mult_input => temp4, Carry_fa_mult_in => cout_mult_(0), S_fa_mult_output => sum_mult_(1), Carry_fa_mult_out => cout_mult_(1));
+    temp5 <= a2_mult and b0_mult;
+    halfadder_mult1: halfadder_mult port map (A_ha_mult_input => sum_mult_(1), B_ha_mult_input => temp5, S_ha_mult_output => sum_mult_(2), Carry_ha_mult_out => cout_mult_(2));
+    c_mult_(2) <= sum_mult_(2);
 
     -- Quarta coluna do multiplicador
-    temp6 <= a0 and b3;
-    temp7 <= a1 and b2;
-    fulladder1: fulladder port map (A_input => temp6, B_input => temp7, Carry_in => cout(1), S_output => sum(3), Carry_out => cout(3));
-    temp8 <= a2 and b1;
-    fulladder2: fulladder port map (A_input => sum(3), B_input => temp8, Carry_in => cout(2), S_output => sum(4), Carry_out => cout(4));
-    temp63 <= a3 and b0;
-    halfadder210: halfadder port map (A_input => sum(4), B_input => temp63, S_output => sum(5), Carry_out => cout(5));
-    c(3) <= sum(5);
+    temp6 <= a0_mult and b3_mult;
+    temp7 <= a1_mult and b2_mult;
+    fulladder_mult1: fulladder_mult port map (A_fa_mult_input => temp6, B_fa_mult_input => temp7, Carry_fa_mult_in => cout_mult_(1), S_fa_mult_output => sum_mult_(3), Carry_fa_mult_out => cout_mult_(3));
+    temp8 <= a2_mult and b1_mult;
+    fulladder_mult2: fulladder_mult port map (A_fa_mult_input => sum_mult_(3), B_fa_mult_input => temp8, Carry_fa_mult_in => cout_mult_(2), S_fa_mult_output => sum_mult_(4), Carry_fa_mult_out => cout_mult_(4));
+    temp63 <= a3_mult and b0_mult;
+    halfadder_mult210: halfadder_mult port map (A_ha_mult_input => sum_mult_(4), B_ha_mult_input => temp63, S_ha_mult_output => sum_mult_(5), Carry_ha_mult_out => cout_mult_(5));
+    c_mult_(3) <= sum_mult_(5);
     
     -- Quinta coluna do multiplicador
-    temp9 <= a0 and b4;
-    temp10 <= a1 and b3;
-    fulladder220: fulladder port map (A_input => temp9, B_input => temp10, Carry_in => cout(3), S_output => sum(6), Carry_out => cout(6));
-    temp11 <= a2 and b2;
-    fulladder4: fulladder port map (A_input => sum(6), B_input => temp11, Carry_in => cout(4), S_output => sum(7), Carry_out => cout(7));
-    temp12 <= a3 and b1;
-    fulladder5: fulladder port map (A_input => sum(7), B_input => temp12, Carry_in => cout(5), S_output => sum(8), Carry_out => cout(8));
-    temp13 <= a4 and b0;
-    halfadder3: halfadder port map (A_input => sum(8), B_input => temp13, S_output => sum(9), Carry_out => cout(9));
-    c(4) <= sum(9);
+    temp9 <= a0_mult and b4_mult;
+    temp10 <= a1_mult and b3_mult;
+    fulladder_mult220: fulladder_mult port map (A_fa_mult_input => temp9, B_fa_mult_input => temp10, Carry_fa_mult_in => cout_mult_(3), S_fa_mult_output => sum_mult_(6), Carry_fa_mult_out => cout_mult_(6));
+    temp11 <= a2_mult and b2_mult;
+    fulladder_mult4: fulladder_mult port map (A_fa_mult_input => sum_mult_(6), B_fa_mult_input => temp11, Carry_fa_mult_in => cout_mult_(4), S_fa_mult_output => sum_mult_(7), Carry_fa_mult_out => cout_mult_(7));
+    temp12 <= a3_mult and b1_mult;
+    fulladder_mult5: fulladder_mult port map (A_fa_mult_input => sum_mult_(7), B_fa_mult_input => temp12, Carry_fa_mult_in => cout_mult_(5), S_fa_mult_output => sum_mult_(8), Carry_fa_mult_out => cout_mult_(8));
+    temp13 <= a4_mult and b0_mult;
+    halfadder_mult3: halfadder_mult port map (A_ha_mult_input => sum_mult_(8), B_ha_mult_input => temp13, S_ha_mult_output => sum_mult_(9), Carry_ha_mult_out => cout_mult_(9));
+    c_mult_(4) <= sum_mult_(9);
 
     -- Sexta coluna do multiplicador
-    temp14 <= a0 and b5;
-    temp15 <= a1 and b4;
-    fulladder6: fulladder port map (A_input => temp14, B_input => temp15, Carry_in => cout(6), S_output => sum(10), Carry_out => cout(10));
-    temp16 <= a2 and b3;
-    fulladder7: fulladder port map (A_input => sum(10), B_input => temp16, Carry_in => cout(7), S_output => sum(11), Carry_out => cout(11));
-    temp17 <= a3 and b2;
-    fulladder8: fulladder port map (A_input => sum(11), B_input => temp17, Carry_in => cout(8), S_output => sum(12), Carry_out => cout(12));
-    temp18 <= a4 and b1;
-    fulladder9: fulladder port map (A_input => sum(12), B_input => temp18, Carry_in => cout(9), S_output => sum(13), Carry_out => cout(13));
-    temp19 <= a5 and b0;
-    halfadder4: halfadder port map (A_input => sum(13), B_input => temp19, S_output => sum(14), Carry_out => cout(14));
-    c(5) <= sum(14);
+    temp14 <= a0_mult and b5_mult;
+    temp15 <= a1_mult and b4_mult;
+    fulladder_mult6: fulladder_mult port map (A_fa_mult_input => temp14, B_fa_mult_input => temp15, Carry_fa_mult_in => cout_mult_(6), S_fa_mult_output => sum_mult_(10), Carry_fa_mult_out => cout_mult_(10));
+    temp16 <= a2_mult and b3_mult;
+    fulladder_mult7: fulladder_mult port map (A_fa_mult_input => sum_mult_(10), B_fa_mult_input => temp16, Carry_fa_mult_in => cout_mult_(7), S_fa_mult_output => sum_mult_(11), Carry_fa_mult_out => cout_mult_(11));
+    temp17 <= a3_mult and b2_mult;
+    fulladder_mult8: fulladder_mult port map (A_fa_mult_input => sum_mult_(11), B_fa_mult_input => temp17, Carry_fa_mult_in => cout_mult_(8), S_fa_mult_output => sum_mult_(12), Carry_fa_mult_out => cout_mult_(12));
+    temp18 <= a4_mult and b1_mult;
+    fulladder_mult9: fulladder_mult port map (A_fa_mult_input => sum_mult_(12), B_fa_mult_input => temp18, Carry_fa_mult_in => cout_mult_(9), S_fa_mult_output => sum_mult_(13), Carry_fa_mult_out => cout_mult_(13));
+    temp19 <= a5_mult and b0_mult;
+    halfadder_mult4: halfadder_mult port map (A_ha_mult_input => sum_mult_(13), B_ha_mult_input => temp19, S_ha_mult_output => sum_mult_(14), Carry_ha_mult_out => cout_mult_(14));
+    c_mult_(5) <= sum_mult_(14);
 
     -- Sétima coluna do multiplicador
-    temp20 <= a0 and b6;
-    temp21 <= a1 and b5;
-    fulladder10: fulladder port map (A_input => temp20, B_input => temp21, Carry_in => cout(10), S_output => sum(15), Carry_out => cout(15));
-    temp22 <= a2 and b4;
-    fulladder11: fulladder port map (A_input => sum(15), B_input => temp22, Carry_in => cout(11), S_output => sum(16), Carry_out => cout(16));
-    temp23 <= a3 and b3;
-    fulladder12: fulladder port map (A_input => sum(16), B_input => temp23, Carry_in => cout(12), S_output => sum(17), Carry_out => cout(17));
-    temp24 <= a4 and b2;
-    fulladder13: fulladder port map (A_input => sum(17), B_input => temp24, Carry_in => cout(13), S_output => sum(18), Carry_out => cout(18));
-    temp25 <= a5 and b1;
-    fulladder14: fulladder port map (A_input => sum(18), B_input => temp25, Carry_in => cout(14), S_output => sum(19), Carry_out => cout(19));
-    temp26 <= a6 and b0;
-    halfadder5: halfadder port map (A_input => sum(19), B_input => temp26, S_output => sum(20), Carry_out => cout(20));
-    c(6) <= sum(20);
+    temp20 <= a0_mult and b6_mult;
+    temp21 <= a1_mult and b5_mult;
+    fulladder_mult10: fulladder_mult port map (A_fa_mult_input => temp20, B_fa_mult_input => temp21, Carry_fa_mult_in => cout_mult_(10), S_fa_mult_output => sum_mult_(15), Carry_fa_mult_out => cout_mult_(15));
+    temp22 <= a2_mult and b4_mult;
+    fulladder_mult11: fulladder_mult port map (A_fa_mult_input => sum_mult_(15), B_fa_mult_input => temp22, Carry_fa_mult_in => cout_mult_(11), S_fa_mult_output => sum_mult_(16), Carry_fa_mult_out => cout_mult_(16));
+    temp23 <= a3_mult and b3_mult;
+    fulladder_mult12: fulladder_mult port map (A_fa_mult_input => sum_mult_(16), B_fa_mult_input => temp23, Carry_fa_mult_in => cout_mult_(12), S_fa_mult_output => sum_mult_(17), Carry_fa_mult_out => cout_mult_(17));
+    temp24 <= a4_mult and b2_mult;
+    fulladder_mult13: fulladder_mult port map (A_fa_mult_input => sum_mult_(17), B_fa_mult_input => temp24, Carry_fa_mult_in => cout_mult_(13), S_fa_mult_output => sum_mult_(18), Carry_fa_mult_out => cout_mult_(18));
+    temp25 <= a5_mult and b1_mult;
+    fulladder_mult14: fulladder_mult port map (A_fa_mult_input => sum_mult_(18), B_fa_mult_input => temp25, Carry_fa_mult_in => cout_mult_(14), S_fa_mult_output => sum_mult_(19), Carry_fa_mult_out => cout_mult_(19));
+    temp26 <= a6_mult and b0_mult;
+    halfadder_mult5: halfadder_mult port map (A_ha_mult_input => sum_mult_(19), B_ha_mult_input => temp26, S_ha_mult_output => sum_mult_(20), Carry_ha_mult_out => cout_mult_(20));
+    c_mult_(6) <= sum_mult_(20);
 
     -- Oitava coluna do multiplicador
-    temp27 <= a0 and b7;
-    temp28 <= a1 and b6;
-    fulladder15: fulladder port map (A_input => temp27, B_input => temp28, Carry_in => cout(15), S_output => sum(21), Carry_out => cout(21));
-    temp29 <= a2 and b5;
-    fulladder16: fulladder port map (A_input => sum(21), B_input => temp29, Carry_in => cout(16), S_output => sum(22), Carry_out => cout(22));
-    temp30 <= a3 and b4;
-    fulladder17: fulladder port map (A_input => sum(22), B_input => temp30, Carry_in => cout(17), S_output => sum(23), Carry_out => cout(23));
-    temp31 <= a4 and b3;
-    fulladder18: fulladder port map (A_input => sum(23), B_input => temp31, Carry_in => cout(18), S_output => sum(24), Carry_out => cout(24));
-    temp32 <= a5 and b2;
-    fulladder19: fulladder port map (A_input => sum(24), B_input => temp32, Carry_in => cout(19), S_output => sum(25), Carry_out => cout(25));
-    temp33 <= a6 and b1;
-    fulladder20: fulladder port map (A_input => sum(25), B_input => temp33, Carry_in => cout(20), S_output => sum(26), Carry_out => cout(26));
-    temp34 <= a7 and b0;
-    halfadder6: halfadder port map (A_input => sum(26), B_input => temp34, S_output => sum(27), Carry_out => cout(27));
-    c(7) <= sum(27);
+    temp27 <= a0_mult and b7_mult;
+    temp28 <= a1_mult and b6_mult;
+    fulladder_mult15: fulladder_mult port map (A_fa_mult_input => temp27, B_fa_mult_input => temp28, Carry_fa_mult_in => cout_mult_(15), S_fa_mult_output => sum_mult_(21), Carry_fa_mult_out => cout_mult_(21));
+    temp29 <= a2_mult and b5_mult;
+    fulladder_mult16: fulladder_mult port map (A_fa_mult_input => sum_mult_(21), B_fa_mult_input => temp29, Carry_fa_mult_in => cout_mult_(16), S_fa_mult_output => sum_mult_(22), Carry_fa_mult_out => cout_mult_(22));
+    temp30 <= a3_mult and b4_mult;
+    fulladder_mult17: fulladder_mult port map (A_fa_mult_input => sum_mult_(22), B_fa_mult_input => temp30, Carry_fa_mult_in => cout_mult_(17), S_fa_mult_output => sum_mult_(23), Carry_fa_mult_out => cout_mult_(23));
+    temp31 <= a4_mult and b3_mult;
+    fulladder_mult18: fulladder_mult port map (A_fa_mult_input => sum_mult_(23), B_fa_mult_input => temp31, Carry_fa_mult_in => cout_mult_(18), S_fa_mult_output => sum_mult_(24), Carry_fa_mult_out => cout_mult_(24));
+    temp32 <= a5_mult and b2_mult;
+    fulladder_mult19: fulladder_mult port map (A_fa_mult_input => sum_mult_(24), B_fa_mult_input => temp32, Carry_fa_mult_in => cout_mult_(19), S_fa_mult_output => sum_mult_(25), Carry_fa_mult_out => cout_mult_(25));
+    temp33 <= a6_mult and b1_mult;
+    fulladder_mult20: fulladder_mult port map (A_fa_mult_input => sum_mult_(25), B_fa_mult_input => temp33, Carry_fa_mult_in => cout_mult_(20), S_fa_mult_output => sum_mult_(26), Carry_fa_mult_out => cout_mult_(26));
+    temp34 <= a7_mult and b0_mult;
+    halfadder_mult6: halfadder_mult port map (A_ha_mult_input => sum_mult_(26), B_ha_mult_input => temp34, S_ha_mult_output => sum_mult_(27), Carry_ha_mult_out => cout_mult_(27));
+    c_mult_(7) <= sum_mult_(27);
 
     -- Nona coluna do multiplicador
-    temp35 <= a1 and b7;
-    fulladder21: fulladder port map (A_input => temp35, B_input => cout(21), Carry_in => cout(22), S_output => sum(28), Carry_out => cout(28));
-    temp36 <= a2 and b6;
-    fulladder22: fulladder port map (A_input => sum(28), B_input => temp36, Carry_in => cout(23), S_output => sum(29), Carry_out => cout(29));
-    temp37 <= a3 and b5;
-    fulladder23: fulladder port map (A_input => sum(29), B_input => temp37, Carry_in => cout(24), S_output => sum(30), Carry_out => cout(30));
-    temp38 <= a4 and b4;
-    fulladder24: fulladder port map (A_input => sum(30), B_input => temp38, Carry_in => cout(25), S_output => sum(31), Carry_out => cout(31));
-    temp39 <= a5 and b3;
-    fulladder25: fulladder port map (A_input => sum(31), B_input => temp39, Carry_in => cout(26), S_output => sum(32), Carry_out => cout(32));
-    temp40 <= a6 and b2;
-    fulladder26: fulladder port map (A_input => sum(32), B_input => temp40, Carry_in => cout(27), S_output => sum(33), Carry_out => cout(33));
-    temp41 <= a7 and b1;
-    halfadder7: halfadder port map (A_input => sum(33), B_input => temp41, S_output => sum(34), Carry_out => cout(34));
-    c(8) <= sum(34);
+    temp35 <= a1_mult and b7_mult;
+    fulladder_mult21: fulladder_mult port map (A_fa_mult_input => temp35, B_fa_mult_input => cout_mult_(21), Carry_fa_mult_in => cout_mult_(22), S_fa_mult_output => sum_mult_(28), Carry_fa_mult_out => cout_mult_(28));
+    temp36 <= a2_mult and b6_mult;
+    fulladder_mult22: fulladder_mult port map (A_fa_mult_input => sum_mult_(28), B_fa_mult_input => temp36, Carry_fa_mult_in => cout_mult_(23), S_fa_mult_output => sum_mult_(29), Carry_fa_mult_out => cout_mult_(29));
+    temp37 <= a3_mult and b5_mult;
+    fulladder_mult23: fulladder_mult port map (A_fa_mult_input => sum_mult_(29), B_fa_mult_input => temp37, Carry_fa_mult_in => cout_mult_(24), S_fa_mult_output => sum_mult_(30), Carry_fa_mult_out => cout_mult_(30));
+    temp38 <= a4_mult and b4_mult;
+    fulladder_mult24: fulladder_mult port map (A_fa_mult_input => sum_mult_(30), B_fa_mult_input => temp38, Carry_fa_mult_in => cout_mult_(25), S_fa_mult_output => sum_mult_(31), Carry_fa_mult_out => cout_mult_(31));
+    temp39 <= a5_mult and b3_mult;
+    fulladder_mult25: fulladder_mult port map (A_fa_mult_input => sum_mult_(31), B_fa_mult_input => temp39, Carry_fa_mult_in => cout_mult_(26), S_fa_mult_output => sum_mult_(32), Carry_fa_mult_out => cout_mult_(32));
+    temp40 <= a6_mult and b2_mult;
+    fulladder_mult26: fulladder_mult port map (A_fa_mult_input => sum_mult_(32), B_fa_mult_input => temp40, Carry_fa_mult_in => cout_mult_(27), S_fa_mult_output => sum_mult_(33), Carry_fa_mult_out => cout_mult_(33));
+    temp41 <= a7_mult and b1_mult;
+    halfadder_mult7: halfadder_mult port map (A_ha_mult_input => sum_mult_(33), B_ha_mult_input => temp41, S_ha_mult_output => sum_mult_(34), Carry_ha_mult_out => cout_mult_(34));
+    c_mult_(8) <= sum_mult_(34);
 
     -- Décima coluna do multiplicador
-    temp42 <= a2 and b7;
-    fulladder27: fulladder port map (A_input => temp42, B_input => cout(28), Carry_in => cout(29), S_output => sum(35), Carry_out => cout(35));
-    temp43 <= a3 and b6;
-    fulladder28: fulladder port map (A_input => sum(35), B_input => temp43, Carry_in => cout(30), S_output => sum(36), Carry_out => cout(36));
-    temp44 <= a4 and b5;
-    fulladder29: fulladder port map (A_input => sum(36), B_input => temp44, Carry_in => cout(31), S_output => sum(37), Carry_out => cout(37));
-    temp45 <= a5 and b4;
-    fulladder30: fulladder port map (A_input => sum(37), B_input => temp45, Carry_in => cout(32), S_output => sum(38), Carry_out => cout(38));
-    temp46 <= a6 and b3;
-    fulladder31: fulladder port map (A_input => sum(38), B_input => temp46, Carry_in => cout(33), S_output => sum(39), Carry_out => cout(39));
-    temp47 <= a7 and b2;
-    fulladder32: fulladder port map (A_input => sum(39), B_input => temp47, Carry_in => cout(34), S_output => sum(40), Carry_out => cout(40));
-    c(9) <= sum(40);
+    temp42 <= a2_mult and b7_mult;
+    fulladder_mult27: fulladder_mult port map (A_fa_mult_input => temp42, B_fa_mult_input => cout_mult_(28), Carry_fa_mult_in => cout_mult_(29), S_fa_mult_output => sum_mult_(35), Carry_fa_mult_out => cout_mult_(35));
+    temp43 <= a3_mult and b6_mult;
+    fulladder_mult28: fulladder_mult port map (A_fa_mult_input => sum_mult_(35), B_fa_mult_input => temp43, Carry_fa_mult_in => cout_mult_(30), S_fa_mult_output => sum_mult_(36), Carry_fa_mult_out => cout_mult_(36));
+    temp44 <= a4_mult and b5_mult;
+    fulladder_mult29: fulladder_mult port map (A_fa_mult_input => sum_mult_(36), B_fa_mult_input => temp44, Carry_fa_mult_in => cout_mult_(31), S_fa_mult_output => sum_mult_(37), Carry_fa_mult_out => cout_mult_(37));
+    temp45 <= a5_mult and b4_mult;
+    fulladder_mult30: fulladder_mult port map (A_fa_mult_input => sum_mult_(37), B_fa_mult_input => temp45, Carry_fa_mult_in => cout_mult_(32), S_fa_mult_output => sum_mult_(38), Carry_fa_mult_out => cout_mult_(38));
+    temp46 <= a6_mult and b3_mult;
+    fulladder_mult31: fulladder_mult port map (A_fa_mult_input => sum_mult_(38), B_fa_mult_input => temp46, Carry_fa_mult_in => cout_mult_(33), S_fa_mult_output => sum_mult_(39), Carry_fa_mult_out => cout_mult_(39));
+    temp47 <= a7_mult and b2_mult;
+    fulladder_mult32: fulladder_mult port map (A_fa_mult_input => sum_mult_(39), B_fa_mult_input => temp47, Carry_fa_mult_in => cout_mult_(34), S_fa_mult_output => sum_mult_(40), Carry_fa_mult_out => cout_mult_(40));
+    c_mult_(9) <= sum_mult_(40);
 
     -- Décima primeira coluna do multiplicador
-    temp48 <= a3 and b7;
-    fulladder33: fulladder port map (A_input => temp48, B_input => cout(35), Carry_in => cout(36), S_output => sum(41), Carry_out => cout(41));
-    temp49 <= a4 and b6;
-    fulladder34: fulladder port map (A_input => sum(41), B_input => temp49, Carry_in => cout(37), S_output => sum(42), Carry_out => cout(42));
-    temp50 <= a5 and b5;
-    fulladder35: fulladder port map (A_input => sum(42), B_input => temp50, Carry_in => cout(38), S_output => sum(43), Carry_out => cout(43));
-    temp51 <= a6 and b4;
-    fulladder36: fulladder port map (A_input => sum(43), B_input => temp51, Carry_in => cout(39), S_output => sum(44), Carry_out => cout(44));
-    temp52 <= a7 and b3;
-    fulladder37: fulladder port map (A_input => sum(44), B_input => temp52, Carry_in => cout(40), S_output => sum(45), Carry_out => cout(45));
-    c(10) <= sum(45);
+    temp48 <= a3_mult and b7_mult;
+    fulladder_mult33: fulladder_mult port map (A_fa_mult_input => temp48, B_fa_mult_input => cout_mult_(35), Carry_fa_mult_in => cout_mult_(36), S_fa_mult_output => sum_mult_(41), Carry_fa_mult_out => cout_mult_(41));
+    temp49 <= a4_mult and b6_mult;
+    fulladder_mult34: fulladder_mult port map (A_fa_mult_input => sum_mult_(41), B_fa_mult_input => temp49, Carry_fa_mult_in => cout_mult_(37), S_fa_mult_output => sum_mult_(42), Carry_fa_mult_out => cout_mult_(42));
+    temp50 <= a5_mult and b5_mult;
+    fulladder_mult35: fulladder_mult port map (A_fa_mult_input => sum_mult_(42), B_fa_mult_input => temp50, Carry_fa_mult_in => cout_mult_(38), S_fa_mult_output => sum_mult_(43), Carry_fa_mult_out => cout_mult_(43));
+    temp51 <= a6_mult and b4_mult;
+    fulladder_mult36: fulladder_mult port map (A_fa_mult_input => sum_mult_(43), B_fa_mult_input => temp51, Carry_fa_mult_in => cout_mult_(39), S_fa_mult_output => sum_mult_(44), Carry_fa_mult_out => cout_mult_(44));
+    temp52 <= a7_mult and b3_mult;
+    fulladder_mult37: fulladder_mult port map (A_fa_mult_input => sum_mult_(44), B_fa_mult_input => temp52, Carry_fa_mult_in => cout_mult_(40), S_fa_mult_output => sum_mult_(45), Carry_fa_mult_out => cout_mult_(45));
+    c_mult_(10) <= sum_mult_(45);
 
     -- Décima segunda coluna do multiplicador
-    temp53 <= a4 and b7;
-    fulladder38: fulladder port map (A_input => temp53, B_input => cout(41), Carry_in => cout(42), S_output => sum(46), Carry_out => cout(46));
-    temp54 <= a5 and b6;
-    fulladder39: fulladder port map (A_input => sum(46), B_input => temp54, Carry_in => cout(43), S_output => sum(47), Carry_out => cout(47));
-    temp55 <= a6 and b5;
-    fulladder40: fulladder port map (A_input => sum(47), B_input => temp55, Carry_in => cout(44), S_output => sum(48), Carry_out => cout(48));
-    temp56 <= a7 and b4;
-    fulladder41: fulladder port map (A_input => sum(48), B_input => temp56, Carry_in => cout(45), S_output => sum(49), Carry_out => cout(49));
-    c(11) <= sum(49);
+    temp53 <= a4_mult and b7_mult;
+    fulladder_mult38: fulladder_mult port map (A_fa_mult_input => temp53, B_fa_mult_input => cout_mult_(41), Carry_fa_mult_in => cout_mult_(42), S_fa_mult_output => sum_mult_(46), Carry_fa_mult_out => cout_mult_(46));
+    temp54 <= a5_mult and b6_mult;
+    fulladder_mult39: fulladder_mult port map (A_fa_mult_input => sum_mult_(46), B_fa_mult_input => temp54, Carry_fa_mult_in => cout_mult_(43), S_fa_mult_output => sum_mult_(47), Carry_fa_mult_out => cout_mult_(47));
+    temp55 <= a6_mult and b5_mult;
+    fulladder_mult40: fulladder_mult port map (A_fa_mult_input => sum_mult_(47), B_fa_mult_input => temp55, Carry_fa_mult_in => cout_mult_(44), S_fa_mult_output => sum_mult_(48), Carry_fa_mult_out => cout_mult_(48));
+    temp56 <= a7_mult and b4_mult;
+    fulladder_mult41: fulladder_mult port map (A_fa_mult_input => sum_mult_(48), B_fa_mult_input => temp56, Carry_fa_mult_in => cout_mult_(45), S_fa_mult_output => sum_mult_(49), Carry_fa_mult_out => cout_mult_(49));
+    c_mult_(11) <= sum_mult_(49);
 
     -- Décima terceira coluna do multiplicador
-    temp57 <= a5 and b7;
-    fulladder42: fulladder port map (A_input => temp57, B_input => cout(46), Carry_in => cout(47), S_output => sum(50), Carry_out => cout(50));
-    temp58 <= a6 and b6;
-    fulladder43: fulladder port map (A_input => sum(50), B_input => temp58, Carry_in => cout(48), S_output => sum(51), Carry_out => cout(51));
-    temp59 <= a7 and b5;
-    fulladder44: fulladder port map (A_input => sum(51), B_input => temp59, Carry_in => cout(49), S_output => sum(52), Carry_out => cout(52));
-    c(12) <= sum(52);
+    temp57 <= a5_mult and b7_mult;
+    fulladder_mult42: fulladder_mult port map (A_fa_mult_input => temp57, B_fa_mult_input => cout_mult_(46), Carry_fa_mult_in => cout_mult_(47), S_fa_mult_output => sum_mult_(50), Carry_fa_mult_out => cout_mult_(50));
+    temp58 <= a6_mult and b6_mult;
+    fulladder_mult43: fulladder_mult port map (A_fa_mult_input => sum_mult_(50), B_fa_mult_input => temp58, Carry_fa_mult_in => cout_mult_(48), S_fa_mult_output => sum_mult_(51), Carry_fa_mult_out => cout_mult_(51));
+    temp59 <= a7_mult and b5_mult;
+    fulladder_mult44: fulladder_mult port map (A_fa_mult_input => sum_mult_(51), B_fa_mult_input => temp59, Carry_fa_mult_in => cout_mult_(49), S_fa_mult_output => sum_mult_(52), Carry_fa_mult_out => cout_mult_(52));
+    c_mult_(12) <= sum_mult_(52);
 
     -- Décima quarta coluna do multiplicador
-    temp60 <= a6 and b7;
-    fulladder45: fulladder port map (A_input => temp60, B_input => cout(50), Carry_in => cout(51), S_output => sum(53), Carry_out => cout(53));
-    temp61 <= a7 and b6;
-    fulladder46: fulladder port map (A_input => sum(53), B_input => temp61, Carry_in => cout(52), S_output => sum(54), Carry_out => cout(54));
-    c(13) <= sum(54);
+    temp60 <= a6_mult and b7_mult;
+    fulladder_mult45: fulladder_mult port map (A_fa_mult_input => temp60, B_fa_mult_input => cout_mult_(50), Carry_fa_mult_in => cout_mult_(51), S_fa_mult_output => sum_mult_(53), Carry_fa_mult_out => cout_mult_(53));
+    temp61 <= a7_mult and b6_mult;
+    fulladder_mult46: fulladder_mult port map (A_fa_mult_input => sum_mult_(53), B_fa_mult_input => temp61, Carry_fa_mult_in => cout_mult_(52), S_fa_mult_output => sum_mult_(54), Carry_fa_mult_out => cout_mult_(54));
+    c_mult_(13) <= sum_mult_(54);
 
     -- Décima quinta coluna do multiplicador
-    temp62 <= a7 and b7;
-    fulladder47: fulladder port map (A_input => temp62, B_input => cout(53), Carry_in => cout(54), S_output => sum(55), Carry_out => cout(55));
-    c(14) <= sum(55);
+    temp62 <= a7_mult and b7_mult;
+    fulladder_mult47: fulladder_mult port map (A_fa_mult_input => temp62, B_fa_mult_input => cout_mult_(53), Carry_fa_mult_in => cout_mult_(54), S_fa_mult_output => sum_mult_(55), Carry_fa_mult_out => cout_mult_(55));
+    c_mult_(14) <= sum_mult_(55);
 
     -- Décima sexta coluna do multiplicador
-    c(15) <= cout(55);
+    c_mult_(15) <= cout_mult_(55);
 
     -- A saída, nesse projeto, tem que ter 8 bits, portanto, pegamos os 8 bits menos significativos de c
-    S_output <= c(7 downto 0);
+    S_mult_output <= c_mult_(7 downto 0);
 
     -- O resto do truncamento é o carry out
-    Carry_out <= (c(15) or c(14) or c(13) or c(12) or c(11) or c(10) or c(9) or c(8));
+    Carry_mult_out <= (c_mult_(15) or c_mult_(14) or c_mult_(13) or c_mult_(12) or c_mult_(11) or c_mult_(10) or c_mult_(9) or c_mult_(8));
 
 end architecture ckt;
