@@ -21,6 +21,8 @@ with k select
 	(a or b) when "1101",
 	(a xor b) when "1110",
 	(not a) when "1111",
+	a(0)&a(1)&a(2)&a(3)&a(4)&a(5)&a(6)&a(7) when "1011",
+	a(3 downto 0) & a(7 downto 4) when "1010",
 a when others;
 
 with k select
