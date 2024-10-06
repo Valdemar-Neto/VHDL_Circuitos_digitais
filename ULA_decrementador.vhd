@@ -2,23 +2,25 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 entity ULA_decrementador is
-	port(
-			A_decrementador : in std_logic_vector(7 downto 0);
-			result_decrementador: out std_logic_vector (7 downto 0)
-	);
-end ULA_decrementador;
+    port(
+        A_decrementador : in  std_logic_vector(7 downto 0); 
+        S_decrementador : out std_logic_vector(7 downto 0); 
+        Cout_decrementador: out std_logic                  
+    );
+end entity ULA_decrementador;
 
-
-architecture behavior of ULA_decrementador is
-    signal carry : std_logic := '1';  -- Inicializamos o carry com '1' para subtrair 1
+architecture combinational of ULA_decrementador is
+    signal temp : std_logic_vector(7 downto 0); -- Usar 8 bits para o resultado
 begin
-    process(A_decrementador)
-    begin
-        carry <= '1'; 
+    
+    temp(0) <= not A_decrementador(0);  
+    temp(7 downto 1) <= A_decrementador(7 downto 1);
 
-        for i in 0 to 7 loop -- BITWISE
-            result_decrementador(i) <= A_decrementador(i) xor carry; 
-            carry <= (not A_decrementador(i)) and carry; 
-        end loop;
-    end process;
-end behavior;
+    S_decrementador <= temp;
+
+    
+    Cout_decrementador <= A_decrementador(7) and A_decrementador(6) and A_decrementador(5) and 
+                          A_decrementador(4) and A_decrementador(3) and A_decrementador(2) and 
+                          A_decrementador(1) and not A_decrementador(0);
+
+end architecture combinational;
