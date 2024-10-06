@@ -48,3 +48,5 @@ begin
     exAL : extensoral port ap(EntradaPA,EntradaPB,entradaPK,saidaExtensorALCarry,saidaExtensorALA8,saidaExtensorALB8);
     multPC : multiplicador port map(EntradaPA,entradaPB,saidaMultiplicador8, saidaMultiplicadorCarry);
     somaDR : ULA_SOMADOR port map(saidaExtensorALA8,saidaExtensorALB8, saidaExtensorALCarry, saidaSomadorSoma8, saidaSomadorCarry );
+
+end architecture;
