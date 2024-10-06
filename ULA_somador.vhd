@@ -3,8 +3,8 @@ use ieee.std_logic_1164.all;
 
 entity ULA_somador is
 	port(
-		A, B : in std_logic_vector(7 downto 0);
-		cout : in std_logic;
+		A_somador, B_somador: in std_logic_vector(7 downto 0);
+		cin : in std_logic;
 		soma : out std_logic_vector (7 downto 0);
 		carry_out : out std_logic
 	);
@@ -14,13 +14,13 @@ architecture behavior of ULA_somador is
 	signal carry: std_logic_vector(8 downto 0);
 begin 
 	---inicializando o carry com valor de cout
-	carry(0) <= cout;
+	carry(0) <= cin;
 	
-	process(A, B)
+	process(A_somador, B_somador)
 	begin
 		for i in 0 to 7 loop
-			carry(i+1) <=( A(i) and B(i)) or (carry(i) and (A(i) xor B(i)));
-			soma(i) <= 	A(i) xor B(i) xor carry(i); ----SOMA
+			carry(i+1) <=( A_somador(i) and B_somador(i)) or (carry(i) and (A_somador(i) xor B_somador(i)));
+			soma(i) <= 	A_somador(i) xor B_somador(i) xor carry(i); ----SOMA
 		end loop;
 		
 		carry_out <= carry(8);
