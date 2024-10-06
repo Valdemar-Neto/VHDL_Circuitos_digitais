@@ -13,40 +13,48 @@ architecture rtl of ULA_COMPLETA is
     component multiplicador is 
         port (
             -- Definindo as entradas e saídas do multiplicador
-            A_input, B_input : in std_logic_vector(7 downto 0);
-            S_output : out std_logic_vector(7 downto 0);
-            Carry_out : out std_logic
+            A_mult_input, B_mult_input : in std_logic_vector(7 downto 0);
+            S_mult_output : out std_logic_vector(7 downto 0);
+            Carry_mult_out : out std_logic
         );
     end component;
     component ULA_somador is
         port(
-            A, B : in std_logic_vector(7 downto 0);
-            cout : in std_logic;
-            soma : out std_logic_vector (7 downto 0);
-            carry_out : out std_logic
+            A_somador, B_somador: in std_logic_vector(7 downto 0);
+            Cin_somador : in std_logic;
+            S_somador : out std_logic_vector (7 downto 0);
+            Cout_somador : out std_logic
         );
     end component;
+    
     component extensoral is
-        port(a,b : in std_logic_vector(7 downto 0); 
-        k : in std_logic_vector(3 downto 0);
-        cin : out std_logic; 
-        ia, ib : out std_logic_vector(7 downto 0));
-    end component;
-    component deslocador_RL3 is
-        Port (
-            sel : in std_logic_vector(2 downto 0); -- seleção de controle
-            A : in std_logic_vector(7 downto 0);   -- entrada de 8 bits
-            Y : out std_logic_vector(7 downto 0);  -- saída de 8 bits
-            carry_out : out std_logic              -- carry (sinal de transporte) de saída
-        );
-    end component;
+        port(a_extensoral,b_extensoral : in std_logic_vector(7 downto 0); 
+        k_extensoral : in std_logic_vector(3 downto 0);
+        cout_extensoral : out std_logic; 
+        ia_extensoral, ib_extensoral : out std_logic_vector(7 downto 0));
+        end component;
+        component deslocador_semprocess is
+            Port (
+                sel_deslocador : in std_logic_vector(2 downto 0); -- seleção de controle
+                A_deslocador : in std_logic_vector(7 downto 0);   -- entrada de 8 bits
+                Y_deslocador : out std_logic_vector(7 downto 0);  -- saída de 8 bits
+                carry_out_deslocador : out std_logic              -- carry (sinal de transporte) de saída
+            );
+        end component;
     -- FALTA : DECREMENTADOR E SWAP // VERIFICAR AS PORTAS
-signal saidaSomadorSoma8, saidaExtensorALA8,saidaExtensorALB8,saidaDeslocadorRL38,saidaMultiplicador8 :std_logic_vector(7 downto 0);
+signal saidaSomadorSoma8, saidaExtensorALA8,saidaExtensorALB8,saidaDeslocadorRL38,saidaMultiplicador8, saidaDecrementador8 :std_logic_vector(7 downto 0);
 signal saidaSomadorCarry, saidaExtensorALCarry,saidaDeslocadorCarry,saidaMultiplicadorCarry : std_logic;
 
 begin
-    exAL : extensoral port ap(EntradaPA,EntradaPB,entradaPK,saidaExtensorALCarry,saidaExtensorALA8,saidaExtensorALB8);
+    exAL : extensoral port map(EntradaPA,EntradaPB,entradaPK,saidaExtensorALCarry,saidaExtensorALA8,saidaExtensorALB8);
     multPC : multiplicador port map(EntradaPA,entradaPB,saidaMultiplicador8, saidaMultiplicadorCarry);
     somaDR : ULA_SOMADOR port map(saidaExtensorALA8,saidaExtensorALB8, saidaExtensorALCarry, saidaSomadorSoma8, saidaSomadorCarry );
+    deslocdr : deslocador_semprocess port map(EntradaPB(2 downto 0),EntradaPA, saidaDeslocadorRL38, saidaDeslocadorCarry);
 
+
+    with entradaPK select
+    saidaPo <= saidaMultiplicador8 when "0011", 
+    saidaDeslocadorRL38 when "1001",
+    saidaDecrementador8 when "0101",
+    saidaSomadorSoma8 when others;
 end architecture;
