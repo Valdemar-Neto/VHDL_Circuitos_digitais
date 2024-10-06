@@ -41,20 +41,32 @@ architecture rtl of ULA_COMPLETA is
                 carry_out_deslocador : out std_logic              -- carry (sinal de transporte) de saída
             );
         end component;
-    -- FALTA : DECREMENTADOR E SWAP // VERIFICAR AS PORTAS
+        component ULA_decrementador is
+            port(
+                A_decrementador : in  std_logic_vector(7 downto 0); 
+                S_decrementador : out std_logic_vector(7 downto 0); 
+                Cout_decrementador: out std_logic                  
+            );
+        end component;
 signal saidaSomadorSoma8, saidaExtensorALA8,saidaExtensorALB8,saidaDeslocadorRL38,saidaMultiplicador8, saidaDecrementador8 :std_logic_vector(7 downto 0);
-signal saidaSomadorCarry, saidaExtensorALCarry,saidaDeslocadorCarry,saidaMultiplicadorCarry : std_logic;
+signal saidaSomadorCarry, saidaExtensorALCarry,saidaDeslocadorCarry,saidaMultiplicadorCarry,saidaDecrementadorCarry : std_logic;
 
 begin
     exAL : extensoral port map(EntradaPA,EntradaPB,entradaPK,saidaExtensorALCarry,saidaExtensorALA8,saidaExtensorALB8);
     multPC : multiplicador port map(EntradaPA,entradaPB,saidaMultiplicador8, saidaMultiplicadorCarry);
     somaDR : ULA_SOMADOR port map(saidaExtensorALA8,saidaExtensorALB8, saidaExtensorALCarry, saidaSomadorSoma8, saidaSomadorCarry );
     deslocdr : deslocador_semprocess port map(EntradaPB(2 downto 0),EntradaPA, saidaDeslocadorRL38, saidaDeslocadorCarry);
-
+    decremt : ULA_decrementador port map(EntradaPA, SaidaDecrementador8,saidaDecrementadorCarry);
 
     with entradaPK select
     saidaPo <= saidaMultiplicador8 when "0011", 
     saidaDeslocadorRL38 when "1001",
     saidaDecrementador8 when "0101",
     saidaSomadorSoma8 when others;
+
+    with entradaPK select 
+        saidapC <= saidaMultiplicadorCarry when "0011",
+        saidaDeslocadorCarry when "1001",
+        saidaDecrementadorCarry when "0101",
+        saidaSomadorCarry when others;
 end architecture;
