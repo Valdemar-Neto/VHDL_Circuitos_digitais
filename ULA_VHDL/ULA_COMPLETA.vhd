@@ -50,7 +50,7 @@ architecture rtl of ULA_COMPLETA is
         end component;
 signal saidaSomadorSoma8, saidaExtensorALA8,saidaExtensorALB8,saidaDeslocadorRL38,saidaMultiplicador8, saidaDecrementador8 :std_logic_vector(7 downto 0);
 signal saidaSomadorCarry, saidaExtensorALCarry,saidaDeslocadorCarry,saidaMultiplicadorCarry,saidaDecrementadorCarry : std_logic;
-
+signal SaidaFinal : std_logic_vector(7 downto 0);
 begin
     exAL : extensoral port map(EntradaPA,EntradaPB,entradaPK,saidaExtensorALCarry,saidaExtensorALA8,saidaExtensorALB8);
     multPC : multiplicador port map(EntradaPA,entradaPB,saidaMultiplicador8, saidaMultiplicadorCarry);
@@ -59,7 +59,8 @@ begin
     decremt : ULA_decrementador port map(EntradaPA, SaidaDecrementador8,saidaDecrementadorCarry);
 
     with entradaPK select
-    saidaPo <= saidaMultiplicador8 when "0011", 
+    saidaFinal <= saidaMultiplicador8 when "0011",
+    saidaDeslocadorRL38 when "1000", 
     saidaDeslocadorRL38 when "1001",
     saidaDecrementador8 when "0101",
     saidaSomadorSoma8 when others;
@@ -67,6 +68,11 @@ begin
     with entradaPK select 
         saidapC <= saidaMultiplicadorCarry when "0011",
         saidaDeslocadorCarry when "1001",
+        saidaDeslocadorCarry when "1000",
         saidaDecrementadorCarry when "0101",
         saidaSomadorCarry when others;
+    with saidaFinal select
+        saidaPz <= '1' when "00000000",
+        '0' when others;
+    saidaPO <= saidaFinal;
 end architecture;
